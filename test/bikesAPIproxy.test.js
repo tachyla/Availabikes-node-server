@@ -111,24 +111,49 @@ describe("citibikes API", () => {
 });
 
 describe("get network stations by href", () => {
-        it('returns null when no href is provided', async () => {
-            const data = {
-                "stations": [
-                    {
-                        "empty_slots": 9,
-                        "free_bikes": 2,
-                        "name": "City Hall",
-                    },
-                    {
-                        "empty_slots": 2,
-                        "free_bikes": 13,
-                        "name": "High St & Warren"
-                    }
-                ]
-            };
-            axios.get.mockResolvedValueOnce({"data": data});
+    it('returns null when no href is provided', async () => {
+        const data = {
+            "stations": [
+                {
+                    "empty_slots": 9,
+                    "free_bikes": 2,
+                    "name": "City Hall",
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 13,
+                    "name": "High St & Warren"
+                }
+            ]
+        };
+        axios.get.mockResolvedValueOnce({"data": data});
 
-           const result = await getNetworkStationsByHref(null);
-            expect(result).toBe(null);
-        });
+       const result = await getNetworkStationsByHref(null);
+        expect(result).toBe(null);
+    });
+    it("returns first station name that has at least N number of bikes ", async () => {
+        // ARRANGE
+        const data = {
+            "stations": [
+                {
+                    "empty_slots": 9,
+                    "free_bikes": 2,
+                    "name": "City Hall",
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 13,
+                    "name": "High St & Warren"
+                }
+            ]
+        };
+        axios.get.mockResolvedValueOnce({"data": data});
+        let numberOfBikes = 3;
+
+        // ACTION
+        const result = await getNetworkStationsByHref("/v2/networks/cogo", numberOfBikes);
+
+        // ASSERTION
+        expect(result).toBe("High St & Warren");
+    });
 });
