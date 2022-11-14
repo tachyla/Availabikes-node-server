@@ -26,4 +26,23 @@ function getNetworkHrefByCity(cityName) {
     .catch((err) => console.error(err));
 }
 
-module.exports = {getNetworkHrefByCity};
+function getNetworkStationsByHref(networkHref, numberOfBikes){
+    if(!networkHref) return null;
+
+    const url = new URL(networkHref, base_url);
+
+    return axios.get(url)
+    .then((res) => getAvailableBikes(res.data.stations, numberOfBikes))
+    .catch((err) => console.error(err));
+
+    function getAvailableBikes(stations, numberOfBikes) {
+        for(let i = 0; i < stations.length; i++){
+            if(stations[i].free_bikes >= numberOfBikes){
+                return stations[i].name;
+            }
+        }
+        return null;
+    }
+}
+
+module.exports = {getNetworkHrefByCity, getNetworkStationsByHref};
