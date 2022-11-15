@@ -1,4 +1,4 @@
-const {getNetworkHrefByCity, getNetworkStationsByHref} = require("../src/bikesAPIproxy.js");
+const {base_url, getNetworkHrefByCity, getNetworkStationsByHref} = require("../src/bikesAPIproxy.js");
 const axios = require("axios");
 
 jest.mock("axios");
@@ -131,6 +131,7 @@ describe("get network stations by href", () => {
        const result = await getNetworkStationsByHref(null);
         expect(result).toBe(null);
     });
+
     it("returns first station name that has at least N number of bikes ", async () => {
         // ARRANGE
         const data = {
@@ -156,4 +157,30 @@ describe("get network stations by href", () => {
         // ASSERTION
         expect(result).toBe("High St & Warren");
     });
+
+    it("returns first station name that has at least N number of bikes 2", async () => {
+            // ARRANGE
+            const myData = {
+                "stations": [
+                    {
+                        "empty_slots": 9,
+                        "free_bikes": 2,
+                        "name": "City Hall",
+                    },
+                    {
+                        "empty_slots": 2,
+                        "free_bikes": 13,
+                        "name": "High St & Warren 2"
+                    }
+                ]};
+            axios.get.mockResolvedValueOnce({"data": myData});
+            let numberOfBikes = 3;
+
+            // ACTION
+            const result = await getNetworkStationsByHref("/v2/networks/cogo", numberOfBikes);
+
+            // ASSERTION
+            expect(result.data).toEqual(myData);
+            expect(result).toBe("High St & Warren 2");
+        });
 });
