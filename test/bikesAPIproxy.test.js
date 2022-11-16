@@ -136,7 +136,7 @@ describe("get network stations by href", () => {
         expect(result).toBe(null);
     });
 
-    it("returns first station name that has at least N number of bikes ", async () => {
+    it("returns first station name that has at least N number of bikes", async () => {
         // ARRANGE
         const data = {
             "stations": [
@@ -161,5 +161,5 @@ describe("get network stations by href", () => {
         // ASSERTION
         expect(result).toBe("High St & Warren");
     });
-
+    it("returns list of 10> stations that have at least N number of bikes", async () => {})
 });
