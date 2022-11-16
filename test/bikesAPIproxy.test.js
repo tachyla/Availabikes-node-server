@@ -75,42 +75,46 @@ describe("citibikes API", () => {
             });
 
     it('returns null if a city does not exist', async () => {
-                        // ARRANGE
-                        const data = {
-                            "networks": [
-                            {
-                                "href": "/v2/networks/fake",
-                                "location": {
-                                    "city": "Columbus",
-                                    "country": "fakeCountry",
-                                },
-                            },
-                            {
-                                "href": "/v2/networks/fakePath",
-                                "location": {
-                                    "city": "Miami, FL",
-                                    "country": "US",
-                                },
-                            },
-                            {
-                                "href": "/v2/networks/cogo",
-                                "location": {
-                                    "city": "Columbus, OH",
-                                    "country": "US",
-                                }
-                            }
-                        ]};
-                        axios.get.mockResolvedValueOnce({"data": data});
+        // ARRANGE
+        const data = {
+            "networks": [
+            {
+                "href": "/v2/networks/fake",
+                "location": {
+                    "city": "Columbus",
+                    "country": "fakeCountry",
+                },
+            },
+            {
+                "href": "/v2/networks/fakePath",
+                "location": {
+                    "city": "Miami, FL",
+                    "country": "US",
+                },
+            },
+            {
+                "href": "/v2/networks/cogo",
+                "location": {
+                    "city": "Columbus, OH",
+                    "country": "US",
+                }
+            }
+        ]};
+        axios.get.mockResolvedValueOnce({"data": data});
 
-                        //ACTION
-                        const result = await getNetworkHrefByCity("Fakecity");
+        //ACTION
+        const result = await getNetworkHrefByCity("Fakecity");
 
-                        // ASSERT
-                        expect(result).toBe(null);
-                    });
+        // ASSERT
+        expect(result).toBe(null);
+});
 });
 
 describe("get network stations by href", () => {
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
     it('returns null when no href is provided', async () => {
         const data = {
             "stations": [
@@ -158,7 +162,7 @@ describe("get network stations by href", () => {
         expect(result).toBe("High St & Warren");
     });
 
-    it("returns first station name that has at least N number of bikes 2", async () => {
+    it("returns first station name that has at least N number of bikes 8", async () => {
             // ARRANGE
             const myData = {
                 "stations": [
@@ -170,17 +174,17 @@ describe("get network stations by href", () => {
                     {
                         "empty_slots": 2,
                         "free_bikes": 13,
-                        "name": "High St & Warren 2"
+                        "name": "High St & Warren 8"
                     }
                 ]};
-            axios.get.mockResolvedValueOnce({"data": myData});
+            axios.get.mockResolvedValue({"data": myData});
             let numberOfBikes = 3;
 
             // ACTION
             const result = await getNetworkStationsByHref("/v2/networks/cogo", numberOfBikes);
 
             // ASSERTION
-            expect(result.data).toEqual(myData);
-            expect(result).toBe("High St & Warren 2");
+            expect(result).toBe("High St & Warren 8");
         });
+
 });

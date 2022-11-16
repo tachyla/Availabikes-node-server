@@ -35,7 +35,7 @@ getNetworkStationsByHref = async (networkHref, numberOfBikes) => {
     const url = new URL(networkHref, base_url);
 
     try {
-        const result = await axios.get(url.href);
+        const result = await axios.get(url);
         return getAvailableBikes(result.data.stations, numberOfBikes)
     } catch (e) {
         console.error(e);
