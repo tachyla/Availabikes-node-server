@@ -42,11 +42,18 @@ getNetworkStationsByHref = async (networkHref, numberOfBikes) => {
     }
 
     function getAvailableBikes(stations, numberOfBikes) {
+        const stationResults = [];
+
         for(let i = 0; i < stations.length; i++){
             if(stations[i].free_bikes >= numberOfBikes){
-                return stations[i].name;
+                stationResults.push(stations[i].name); 
             }
         }
+        
+        if(stationResults.length != 0){
+            return stationResults;
+        }
+        
         return null;
     }
 }

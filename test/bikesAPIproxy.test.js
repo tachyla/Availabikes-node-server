@@ -160,8 +160,73 @@ describe("get network stations by href", () => {
         const result = await getNetworkStationsByHref("/v2/networks/cogo", numberOfBikes);
 
         // ASSERTION
-        expect(result).toBe("High St & Warren");
+        expect(result).toStrictEqual(["High St & Warren"]);
     });
+});
 
-    it("returns list of 10> stations that have at least N number of bikes", async () => {});
+describe("displaying station results", () => {
+    beforeEach(() => {
+        mockStationsData = {
+            "stations": [
+
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 13,
+                    "name": "StationName 1"
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 3,
+                    "name": "StationName 2"
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 17,
+                    "name": "StationName 3"
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 11,
+                    "name": "StationName W"
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 47,
+                    "name": "StationName X"
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 4,
+                    "name": "StationName Y"
+                },
+                {
+                    "empty_slots": 2,
+                    "free_bikes": 10,
+                    "name": "StationName Z"
+                },
+            ]
+        };
+    })
+
+    it("returns list of 5> stations that have at least N number of bikes", async () => {
+
+        axios.get.mockResolvedValueOnce({"data": mockStationsData});
+
+        let numberOfBikes = 7;
+
+        // Action
+        const result = await getNetworkStationsByHref("/v2/networks/cincy-red-bike", numberOfBikes);
+        
+        const stationNames = [
+            "StationName 1",
+            "StationName 3",
+            "StationName W", 
+            "StationName X",
+            "StationName Z"
+        ];
+
+        // ASSERTION
+        expect(result).toStrictEqual(stationNames);
+
+    });
 });
