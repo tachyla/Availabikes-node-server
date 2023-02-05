@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "test:jest": "jest",
+    "test:jest": "jest --watchAll",
     "ui": "browser-sync start --config bs-config.js"
   },
   "repository": {
