@@ -171,6 +171,11 @@ describe("displaying station results", () => {
 
                 {
                     "empty_slots": 2,
+                    "free_bikes": 3,
+                    "name": "StationName 0"
+                },
+                {
+                    "empty_slots": 2,
                     "free_bikes": 13,
                     "name": "StationName 1"
                 },
@@ -183,8 +188,16 @@ describe("displaying station results", () => {
                     "empty_slots": 2,
                     "free_bikes": 17,
                     "name": "StationName 3"
+                },                {
+                    "empty_slots": 72,
+                    "free_bikes": 1,
+                    "name": "StationName U"
                 },
                 {
+                    "empty_slots": 1,
+                    "free_bikes": 1,
+                    "name": "StationName V"
+                },                {
                     "empty_slots": 2,
                     "free_bikes": 11,
                     "name": "StationName W"
@@ -203,7 +216,7 @@ describe("displaying station results", () => {
                     "empty_slots": 2,
                     "free_bikes": 10,
                     "name": "StationName Z"
-                },
+                }
             ]
         };
     })
@@ -229,4 +242,23 @@ describe("displaying station results", () => {
         expect(result).toStrictEqual(stationNames);
 
     });
+
+    it("returns list of 10> stations that have at least N number of bikes", async () => {
+        axios.get.mockResolvedValueOnce({"data": mockStationsData});
+
+        let numberOfBikes = 1;
+
+        const result = await getNetworkStationsByHref("/v2/networks/cincy-red-bike", numberOfBikes);
+
+        const stationNames = [
+            "StationName 1",
+            "StationName 2",
+            "StationName 3",
+            "StationName U",
+            "StationName V",
+            "StationName W", 
+            "StationName X",
+            "StationName Z"
+        ];
+    })
 });
